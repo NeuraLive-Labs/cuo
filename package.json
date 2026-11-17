@@ -235,7 +235,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "check:task": "npm run check:fast && npm run test",
-    "package": "npm run build && npx @vscode/vsce package --no-dependencies --allow-missing-repository --baseContentUrl https://github.com/cuo/cuo/blob/main --baseImagesUrl https://github.com/cuo/cuo/raw/main",
+    "package": "npm run build && npx @vscode/vsce package --no-dependencies --baseContentUrl https://github.com/NeuraLive-Labs/cuo/blob/main --baseImagesUrl https://github.com/NeuraLive-Labs/cuo/raw/main",
     "vscode:prepublish": "npm run build"
   },
   "devDependencies": {
