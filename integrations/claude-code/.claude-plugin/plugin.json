@@ -1,0 +1,8 @@
+{
+  "name": "cuo",
+  "version": "1.1.0",
+  "description": "CUO multi-agent telemetry and optimization hooks for Claude Code (local ~/.cuo/telemetry; no Cursor required).",
+  "author": {
+    "name": "CUO"
+  }
+}

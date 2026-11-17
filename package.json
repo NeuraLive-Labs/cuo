@@ -1,0 +1,255 @@
+{
+  "name": "cuo",
+  "displayName": "CUO — Cursor Usage Optimizer",
+  "description": "Analyze, explain, and reduce wasted Cursor AI resources — especially Context Usage — with provenance-aware metrics and authorized optimizations.",
+  "version": "1.1.0",
+  "publisher": "cuo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NeuraLive-Labs/cuo.git"
+  },
+  "homepage": "https://github.com/NeuraLive-Labs/cuo#readme",
+  "bugs": {
+    "url": "https://github.com/NeuraLive-Labs/cuo/issues"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Machine Learning"
+  ],
+  "keywords": [
+    "cursor",
+    "claude-code",
+    "context",
+    "tokens",
+    "optimizer",
+    "ai",
+    "usage",
+    "multi-agent",
+    "graphify",
+    "ponytail"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "cuo.openDashboard",
+        "title": "CUO: Open Dashboard",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "cuo.analyzeWorkspace",
+        "title": "CUO: Analyze Workspace",
+        "icon": "$(search)"
+      },
+      {
+        "command": "cuo.refreshContext",
+        "title": "CUO: Refresh Context Metrics",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "cuo.importContextReport",
+        "title": "CUO: Import Context Report"
+      },
+      {
+        "command": "cuo.captureManualContext",
+        "title": "CUO: Capture Manual Context Snapshot"
+      },
+      {
+        "command": "cuo.runOptimization",
+        "title": "CUO: Run Optimization Pass",
+        "icon": "$(lightbulb)"
+      },
+      {
+        "command": "cuo.applyRecommendation",
+        "title": "CUO: Apply Recommendation"
+      },
+      {
+        "command": "cuo.revertLastChange",
+        "title": "CUO: Revert Last Authorized Change"
+      },
+      {
+        "command": "cuo.showWaste",
+        "title": "CUO: Show Waste Findings"
+      },
+      {
+        "command": "cuo.modelAdvice",
+        "title": "CUO: Model Advisor"
+      },
+      {
+        "command": "cuo.exportAnalytics",
+        "title": "CUO: Export Analytics Snapshot"
+      },
+      {
+        "command": "cuo.clearHistory",
+        "title": "CUO: Clear Local History"
+      },
+      {
+        "command": "cuo.showIntegrations",
+        "title": "CUO: Show Integrations"
+      },
+      {
+        "command": "cuo.installClaudeCodeIntegration",
+        "title": "CUO: Install Claude Code Integration"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "cuo",
+          "title": "CUO",
+          "icon": "media/cuo-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "cuo": [
+        {
+          "type": "webview",
+          "id": "cuo.sidebar",
+          "name": "Usage Optimizer"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "cuo.refreshContext",
+          "when": "view == cuo.sidebar",
+          "group": "navigation"
+        },
+        {
+          "command": "cuo.openDashboard",
+          "when": "view == cuo.sidebar",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "cuo.applyRecommendation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CUO — Cursor Usage Optimizer",
+      "properties": {
+        "cuo.optimizationMode": {
+          "type": "string",
+          "enum": [
+            "analysis",
+            "recommendation",
+            "assisted",
+            "automatic"
+          ],
+          "default": "recommendation",
+          "description": "Optimization mode. Automatic only runs pre-authorized safe actions."
+        },
+        "cuo.charsPerToken": {
+          "type": "number",
+          "default": 4,
+          "minimum": 2,
+          "maximum": 8,
+          "description": "Heuristic characters-per-token used for Estimated provenance only."
+        },
+        "cuo.autoAnalyzeOnOpen": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run a lightweight workspace analysis when a folder opens."
+        },
+        "cuo.statusBarEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show CUO context/usage summary in the status bar."
+        },
+        "cuo.historyLimit": {
+          "type": "number",
+          "default": 50,
+          "minimum": 5,
+          "maximum": 500,
+          "description": "Max context history snapshots kept in local storage."
+        },
+        "cuo.safeAutoActions": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string",
+            "enum": [
+              "suggestOnly",
+              "appendCursorignorePatterns",
+              "disableRedundantMcpServer"
+            ]
+          },
+          "description": "Pre-authorized safe actions allowed in Automatic mode."
+        },
+        "cuo.tokenPricingUsdPer1kInput": {
+          "type": "number",
+          "default": 0,
+          "description": "Optional USD per 1K input tokens for Estimated cost display (0 = hide cost)."
+        },
+        "cuo.tokenPricingUsdPer1kOutput": {
+          "type": "number",
+          "default": 0,
+          "description": "Optional USD per 1K output tokens for Estimated cost display (0 = hide cost)."
+        },
+        "cuo.privacy.neverSendCodeExternally": {
+          "type": "boolean",
+          "default": true,
+          "description": "Hard guarantee: CUO never transmits workspace code to external services."
+        },
+        "cuo.integrations.cursor": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Cursor/VS Code host adapter in Integration Manager."
+        },
+        "cuo.integrations.claudeCode": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Claude Code detection and shared ~/.cuo/telemetry ingest."
+        },
+        "cuo.integrations.ponytail": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect optional Ponytail install (does not redistribute Ponytail)."
+        },
+        "cuo.integrations.graphify": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect Graphify CLI/graph.json and prefer query over corpus re-read."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "build:webview": "vite build --config webview/vite.config.ts",
+    "build": "npm run build:webview && npm run compile",
+    "check:types": "tsc -p tsconfig.json --noEmit && tsc -p webview/tsconfig.json --noEmit",
+    "check:fast": "npm run check:types",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check:task": "npm run check:fast && npm run test",
+    "package": "npm run build && npx @vscode/vsce package --no-dependencies --allow-missing-repository --baseContentUrl https://github.com/cuo/cuo/blob/main --baseImagesUrl https://github.com/cuo/cuo/raw/main",
+    "vscode:prepublish": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.3.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "esbuild": "^0.25.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2",
+    "vitest": "^3.0.9"
+  }
+}
